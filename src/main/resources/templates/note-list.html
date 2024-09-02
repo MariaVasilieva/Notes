@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Мої нотатки</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+  <h2>Мої нотатки - <span th:text="${notes.size()}"></span> шт.</h2>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Ім'я нотатки</th>
+      <th>Тип доступу</th>
+      <th>Дії</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="note : ${notes}">
+      <td th:text="${note.name}"></td>
+      <td th:text="${note.type}"></td>
+      <td>
+        <a th:href="@{/note/edit/{id}(id=${note.id})}" class="btn btn-warning">Редагувати</a>
+        <a th:href="@{/note/share/{id}(id=${note.id})}" class="btn btn-info">Поділитися</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <a th:href="@{/note/create}" class="btn btn-primary">Створити нову нотатку</a>
+</div>
+</body>
+</html>
