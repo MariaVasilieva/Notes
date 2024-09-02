@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Перегляд нотатки</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h2 th:text="${note.name}">Назва нотатки</h2>
+    <p th:text="${note.content}">Вміст нотатки</p>
+    <hr>
+    <p><strong>Тип доступу:</strong> <span th:text="${note.type}">public/private</span></p>
+    <a th:href="@{/}" class="btn btn-primary">На головну</a>
+</div>
+</body>
+</html>
