@@ -1,6 +1,6 @@
-package com.example.demo.users;
+package com.example.demo.user;
 
-import com.example.demo.notes.model.Note;
+import com.example.demo.note.model.Note;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -32,10 +32,11 @@ public class User implements UserDetails {
     private String username;
 
     @Column(nullable = false)
+    @Size(min = 8, max = 100)
     private String password;
 
-    @Size(min = 8, max = 100)
-    private String passwordHash;
+    @Column(name = "enabled")
+    private boolean enabled;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Note> notes = new HashSet<>();
@@ -63,5 +64,10 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +"password='" + password + '\'' +", username='" + username + '\'' +", id=" + id +'}';
     }
 }

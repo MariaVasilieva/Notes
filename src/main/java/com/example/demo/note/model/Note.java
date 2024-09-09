@@ -1,6 +1,6 @@
-package com.example.demo.notes.model;
+package com.example.demo.note.model;
 
-import com.example.demo.users.User;
+import com.example.demo.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
