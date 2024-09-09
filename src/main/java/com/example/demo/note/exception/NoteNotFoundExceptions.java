@@ -1,4 +1,4 @@
-package com.example.demo.notes.exceptions;
+package com.example.demo.note.exception;
 
 public class NoteNotFoundExceptions extends RuntimeException{
     public NoteNotFoundExceptions(String message){

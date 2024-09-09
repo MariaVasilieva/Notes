@@ -1,10 +1,15 @@
 package com.example.demo.auth.config;
 
-
+import com.example.demo.user.User;
+import com.example.demo.user.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -14,27 +19,34 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, UserDetailsService userDetailsService) throws Exception {
+        return httpSecurity
+                .authorizeHttpRequests(request ->
+                        request
+                                .requestMatchers("/note/**").authenticated()
+                                .requestMatchers(HttpMethod.GET,"/").permitAll()
+                                .requestMatchers("/register").permitAll()
+                                .anyRequest().permitAll()
+                )
+                .httpBasic(Customizer.withDefaults())
+                .formLogin(loginConfigurer -> loginConfigurer.loginPage("/login").permitAll())
+                .csrf(AbstractHttpConfigurer::disable)
+                .userDetailsService(userDetailsService)
+                .build();
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests(authorizeRequests ->
-                        authorizeRequests
-                                .requestMatchers("/", "/login", "/register").permitAll()
-                                .anyRequest().authenticated()
-                )
-                .formLogin(formLogin ->
-                        formLogin
-                                .loginPage("/login")
-                                .defaultSuccessUrl("/note/list", true)
-                                .permitAll()
-                )
-                .logout(logout ->
-                        logout.permitAll()
-                );
-        return http.build();
+    public UserDetailsService userDetailsService(UserService userService) {
+        return username -> {
+            User user = userService.findByName(username);
+            return org.springframework.security.core.userdetails.User.withUsername(username)
+                    .password(user.getPassword())
+                    .build();
+        };
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

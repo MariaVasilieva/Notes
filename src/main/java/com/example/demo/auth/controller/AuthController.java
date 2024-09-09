@@ -1,47 +1,52 @@
 package com.example.demo.auth.controller;
 
-
-import com.example.demo.auth.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.user.UserRequest;
+import com.example.demo.user.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+
+import java.security.Principal;
 
 @Controller
+@RequestMapping("/")
+@RequiredArgsConstructor
 public class AuthController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @GetMapping("/login")
-    public ModelAndView showLoginForm(@RequestParam(value = "error", required = false) String error) {
-        ModelAndView modelAndView = new ModelAndView("login");
-        if (error != null) {
-            modelAndView.addObject("error", "Invalid username or password.");
-        }
-        return modelAndView;
+    public String login(Model model) {
+        model.addAttribute("user", new UserRequest());
+        return "login";
     }
 
     @GetMapping("/register")
-    public ModelAndView showRegistrationForm(@RequestParam(value = "error", required = false) String error) {
-        ModelAndView modelAndView = new ModelAndView("register");
-        if (error != null) {
-            modelAndView.addObject("error", error);
-        }
-        return modelAndView;
+    public String register(Model model) {
+        model.addAttribute("user", new UserRequest());
+        return "register";
     }
 
     @PostMapping("/register")
-    public ModelAndView registerUser(@RequestParam String username,
-                                     @RequestParam String password) {
+    public String registerSubmit(@ModelAttribute UserRequest user, Model model) {
         try {
-            userService.registerUser(username, password);
-            return new ModelAndView("redirect:/login");
+            userService.createUser(user);
         } catch (Exception e) {
-            // Handle registration error (e.g., username already exists)
-            return new ModelAndView("redirect:/register?error=" + e.getMessage());
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("user", new UserRequest());
+            return "register";
         }
+        return "redirect:/login";
     }
+
+    @RequestMapping("/")
+    public String defaultPath(Principal principal) {
+        if (principal != null) {
+            return "redirect:/note/list";
+        }
+        return "redirect:/login";
+    }
+
 }
