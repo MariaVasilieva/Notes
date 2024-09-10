@@ -21,8 +21,15 @@
       <td th:text="${note.title}"></td>
       <td th:text="${note.content}"></td>
       <td>
-        <a th:href="@{/note/edit/{id}(id=${note.id})}" class="btn btn-warning">Редагувати</a>
-        <a th:href="@{/note/share/{id}(id=${note.id})}" class="btn btn-info">Поділитися</a>
+        <form action="/note/edit" method="get" class="d-inline mr-2 scalable_element">
+          <input type="hidden" name="id" th:value="${note.id}">
+          <button type="submit" class="btn btn-outline-success bold-text" th:text="#{edit}">Edit</button>
+        </form>
+        <form action="/note/delete" method="post" class="d-inline mr-2 scalable_element">
+          <input type="hidden" name="id" th:value="${note.id}">
+          <button type="submit"  class="btn btn-outline-danger bold-text" th:text="#{delete}"
+                  th:attr="onclick='return confirm(\'' + #{button.delete} + '\');'">Delete</button>
+        </form>
       </td>
     </tr>
     </tbody>

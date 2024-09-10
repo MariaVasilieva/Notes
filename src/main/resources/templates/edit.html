@@ -1,107 +1,57 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="uk" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Редагування нотатки</title>
-    <style>
-        body {
-          font-family: sans-serif;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          min-height: 100vh;
-          background-color: #f0f0f0;
-        }
-
-        .container {
-          background-color: #fff;
-          padding: 20px;
-          border-radius: 5px;
-          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-          width: 500px;
-        }
-
-        h1 {
-          text-align: center;
-          margin-bottom: 20px;
-        }
-
-        .form-group {
-          margin-bottom: 15px;
-        }
-
-        label {
-          display: block;
-          margin-bottom: 5px;
-        }
-
-        input[type="text"] {
-          width: 100%;
-          padding: 10px;
-          border: 1px solid #ccc;
-          border-radius: 3px;
-        }
-
-        textarea {
-          width: 100%;
-          height: 200px;
-          padding: 10px;
-          border: 1px solid #ccc;
-          border-radius: 3px;
-          resize: vertical;
-        }
-
-        .radio-group {
-          display: flex;
-          align-items: center;
-        }
-
-        input[type="radio"] {
-          margin-right: 5px;
-        }
-
-        button {
-          background-color: #4CAF50;
-          color: white;
-          padding: 10px 20px;
-          border: none;
-          border-radius: 3px;
-          cursor: pointer;
-          margin-right: 10px;
-        }
-
-        button:hover {
-          background-color: #45a049;
-        }
-    </style>
+    <title>Edit Note</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
 <div class="container">
-    <h1>Редагування нотатки</h1>
-    <form>
+
+    <h1 th:text="#{edit.note}" class="edit_name scalable_element">Edit Note</h1>
+
+    <form action="/note/edit" method="post" th:object="${note}" class="form_edit">
+        <input class="scalable_element" type="hidden" th:field="*{id}">
+
         <div class="form-group">
-            <label for="name">Ім'я</label>
-            <input type="text" id="name" value="Нотатка 1" readonly>
+            <label for="title" th:text="#{note.name}" class="font_x_large scalable_element">Title</label>
+            <input type="text" id="title" name="title" th:field="*{title}" class="form-control edit_text_color scalable_element" required>
         </div>
+
         <div class="form-group">
-            <label for="content">При редагуванні існуючої нотатки в це поле має підвантажитись існуючий текст нотатки</label>
-            <textarea id="content" readonly></textarea>
+            <label for="content" th:text="#{note.text}" class="font_x_large bold-text scalable_element">Content</label>
+            <textarea id="content" name="content" th:field="*{content}" class="form-control edit_textarea_color scalable_element" rows="7" required></textarea>
         </div>
-        <div class="form-group">
-            <div class="radio-group">
-                <input type="radio" id="public" name="visibility" checked>
-                <label for="public">Публічний</label>
-                <input type="radio" id="private" name="visibility">
-                <label for="private">Приватний</label>
+
+        <div class="form-group d-flex align-items-center justify-content-between">
+            <div class="form-check form-check-inline">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input scalable_element" type="radio" id="public" name="accessType" value="PUBLIC" th:checked="${note.accessType.name() == 'PUBLIC'}">
+                    <label class="form-check-label public_color scalable_element" for="public" th:text="#{public}">Public</label>
+                </div>
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input scalable_element" type="radio" id="private" name="accessType" value="PRIVATE" th:checked="${note.accessType.name() == 'PRIVATE'}">
+                    <label class="form-check-label privat_color scalable_element" for="private" th:text="#{private}">Private</label>
+                </div>
+            </div>
+            <div class="d-flex align-items-center ml-3">
+                <label for="color" th:text="#{color}" class="form-check-label privat_color scalable_element position">Color</label>
+                <input type="color" id="color" name="color" th:field="*{color}" class="form-control color-picker scalable_element color_width" />
             </div>
         </div>
-        <div class="form-group">
-            <button type="button">Відмінити</button>
-            <button type="button">Зберегти</button>
+        <div class="button-container">
+            <button type="submit" class="btn btn-outline-success scalable_element" th:text="#{save}">Save</button>
+            <button type="button" class="btn btn-outline-danger scalable_element"
+                    th:onclick="|window.location.href='@{/note/list}'|" th:text="#{back}">Cancel</button>
         </div>
     </form>
+    <br>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
