@@ -23,18 +23,18 @@
       <td>
         <form action="/note/edit" method="get" class="d-inline mr-2 scalable_element">
           <input type="hidden" name="id" th:value="${note.id}">
-          <button type="submit" class="btn btn-outline-success bold-text" th:text="#{edit}">Edit</button>
+          <button type="submit" class="btn btn-outline-success bold-text" th:text="#{edit}">Редагувати</button>
         </form>
 
         <form action="/note/delete" method="post" class="d-inline mr-2 scalable_element">
         <input type="hidden" name="id" th:value="${note.id}">
         <button type="submit"  class="btn btn-outline-danger bold-text" th:text="#{delete}"
-                th:attr="onclick='return confirm(\'' + #{button.delete} + '\');'">Delete</button>
+                th:attr="onclick='return confirm(\'' + #{button.delete} + '\');'">Видалити</button>
       </form>
 
         <button type="button" class="btn btn-outline-info bold-text scalable_element"
                 th:data-note-id="${note.id}"
-                onclick="copyToClipboard(this.getAttribute('data-note-id'))" th:text="#{link}">Copy Link
+                onclick="copyToClipboard(this.getAttribute('data-note-id'))" th:text="#{link}">Скопіювати посилання
         </button>
 
       </td>

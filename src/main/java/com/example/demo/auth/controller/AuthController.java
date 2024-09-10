@@ -25,6 +25,7 @@ public class AuthController {
     public static final String SESSION_ATTRIBUTE_ERROR = "error";
 
     private final UserService userService;
+
     @Autowired
     private MessageSource messageSource;
 

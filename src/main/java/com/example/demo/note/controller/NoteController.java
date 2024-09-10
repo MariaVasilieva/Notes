@@ -22,11 +22,13 @@ import java.util.Optional;
 @RequestMapping("/note")
 @RequiredArgsConstructor
 public class NoteController {
+
     private static final String REDIRECT_NOTE_ERROR = "redirect:error";
     private static final String REDIRECT_NOTE_LIST = "redirect:/note/list";
     private static final String REDIRECT_NOTE_DENIED = "redirect:/note/denied";
     private static final String REDIRECT_LOGIN = "redirect:/login";
     private static final String NOTE_ERROR_ATTRIBUTE = "error";
+
     private final NoteService noteService;
     private final UserService userService;
 
@@ -163,18 +165,18 @@ public class NoteController {
         }
 
         model.addAttribute("note", note);
-        return "note/access-permit";
+        return "access-permit";
     }
 
     @GetMapping("/error")
     public String error(Model model, @ModelAttribute(NOTE_ERROR_ATTRIBUTE) String errorMessage) {
         model.addAttribute("error", errorMessage);
-        return "note/error";
+        return "error";
     }
 
     @GetMapping("/denied")
     public String getDenied(Model model) {
-        return "note/access-denied";
+        return "access-denied";
     }
 
     @GetMapping("/view/{id}")
@@ -186,7 +188,7 @@ public class NoteController {
             Note note = optionalNote.get();
             if (note.getUser().equals(currentUser) || note.getAccessType() == AccessType.PUBLIC) {
                 model.addAttribute("note", note);
-                return "note/view";
+                return "view";
             } else {
                 return REDIRECT_NOTE_DENIED;
             }
