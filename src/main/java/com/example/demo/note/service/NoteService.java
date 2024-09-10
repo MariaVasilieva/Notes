@@ -26,7 +26,7 @@ public class NoteService {
     }
 
     public void deleteById(String id) {
-        noteRepository.deleteById(Long.valueOf(id));
+        noteRepository.deleteById(id);
     }
 
     public void save(Note note) {
@@ -37,7 +37,7 @@ public class NoteService {
     }
 
     public Optional<Note> getById(String id) {
-        return noteRepository.findById(Long.valueOf(id));
+        return noteRepository.findById(id);
     }
 
     public List<Note> findByUser(User user) {
