@@ -2,72 +2,37 @@ package com.example.demo.user;
 
 import com.example.demo.note.model.Note;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Collection;
-import java.util.HashSet;
+import lombok.Setter;
+import lombok.ToString;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-@Entity
-@Data
+@Getter
+@Setter
+@ToString(exclude = "notes")
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Entity
 @Table(name = "users")
-@Size
-public class User implements UserDetails {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Size(min = 5, max = 50)
-    @Column(unique = true)
+    @Column
+    @Size(min = 5, max = 50, message = "{error.username.empty}")
+    @NotEmpty(message = "{error.username.empty}")
     private String username;
 
-    @Column(nullable = false)
-    @Size(min = 8, max = 100)
+    @Column
+    @Size(min = 8, max = 100, message = "{error.password.empty}")
+    @NotEmpty(message = "{error.username.empty}")
     private String password;
+    @Column
+    private boolean enabled = true;
 
-    @Column(name = "enabled")
-    private boolean enabled;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Note> notes = new HashSet<>();
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +"password='" + password + '\'' +", username='" + username + '\'' +", id=" + id +'}';
-    }
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Note> notes = new ArrayList<>();
 }
