@@ -1,6 +1,6 @@
-package com.example.demo.notes;
+package com.example.demo.note;
 
-import com.example.demo.notes.model.AccessType;
+import com.example.demo.note.model.AccessType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

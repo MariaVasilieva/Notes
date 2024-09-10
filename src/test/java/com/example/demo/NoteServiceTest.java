@@ -1,18 +1,18 @@
 package com.example.demo;
 
-import com.example.demo.notes.NoteDto;
+import com.example.demo.note.NoteDto;
 
-import com.example.demo.notes.NoteRepository;
-import com.example.demo.notes.exceptions.NoteNotFoundExceptions;
-import com.example.demo.notes.model.Note;
-import com.example.demo.users.User;
-import com.example.demo.users.UserRepository;
+import com.example.demo.note.NoteRepository;
+import com.example.demo.note.exception.NoteNotFoundExceptions;
+import com.example.demo.note.model.Note;
+import com.example.demo.user.User;
+import com.example.demo.user.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import com.example.demo.notes.service.NoteServiceImpl;
+import com.example.demo.note.service.NoteService;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class NoteServiceImplTest {
+public class NoteServiceTest {
 
     @Mock
     private NoteRepository noteRepository;
@@ -31,7 +31,7 @@ public class NoteServiceImplTest {
     private UserRepository userRepository;
 
     @InjectMocks
-    private NoteServiceImpl noteService;
+    private NoteService noteService;
 
     @Test
     void testGetAllNotesForUser() {

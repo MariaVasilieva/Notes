@@ -18,8 +18,8 @@
     </thead>
     <tbody>
     <tr th:each="note : ${notes}">
-      <td th:text="${note.name}"></td>
-      <td th:text="${note.type}"></td>
+      <td th:text="${note.title}"></td>
+      <td th:text="${note.content}"></td>
       <td>
         <a th:href="@{/note/edit/{id}(id=${note.id})}" class="btn btn-warning">Редагувати</a>
         <a th:href="@{/note/share/{id}(id=${note.id})}" class="btn btn-info">Поділитися</a>

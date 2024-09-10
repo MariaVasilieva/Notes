@@ -1,4 +1,4 @@
-package com.example.demo.notes.model;
+package com.example.demo.note.model;
 
 public enum AccessType {
     PRIVATE,
