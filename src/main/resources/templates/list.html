@@ -25,16 +25,38 @@
           <input type="hidden" name="id" th:value="${note.id}">
           <button type="submit" class="btn btn-outline-success bold-text" th:text="#{edit}">Edit</button>
         </form>
+
         <form action="/note/delete" method="post" class="d-inline mr-2 scalable_element">
-          <input type="hidden" name="id" th:value="${note.id}">
-          <button type="submit"  class="btn btn-outline-danger bold-text" th:text="#{delete}"
-                  th:attr="onclick='return confirm(\'' + #{button.delete} + '\');'">Delete</button>
-        </form>
+        <input type="hidden" name="id" th:value="${note.id}">
+        <button type="submit"  class="btn btn-outline-danger bold-text" th:text="#{delete}"
+                th:attr="onclick='return confirm(\'' + #{button.delete} + '\');'">Delete</button>
+      </form>
+
+        <button type="button" class="btn btn-outline-info bold-text scalable_element"
+                th:data-note-id="${note.id}"
+                onclick="copyToClipboard(this.getAttribute('data-note-id'))" th:text="#{link}">Copy Link
+        </button>
+
       </td>
     </tr>
     </tbody>
   </table>
+
   <a th:href="@{/note/create}" class="btn btn-primary">Створити нову нотатку</a>
+
+  <script th:inline="javascript">
+    function copyToClipboard(noteId) {
+        const link = `${window.location.origin}/note/share/${noteId}`;
+        const copiedMessage = /*[[#{link.copied}]]*/ 'Link copied to clipboard: ';
+        const errorMessage = /*[[#{link.copy.error}]]*/ 'Could not copy text: ';
+        navigator.clipboard.writeText(link).then(() => {
+            alert(copiedMessage + link);
+        }).catch(err => {
+            console.error(errorMessage, err);
+        });
+    }
+  </script>
+
 </div>
 </body>
 </html>
